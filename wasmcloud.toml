@@ -1,0 +1,6 @@
+name = "Telnet Provider"
+language = "rust"
+type = "provider"
+
+[provider]
+vendor = "wasmCloud"
