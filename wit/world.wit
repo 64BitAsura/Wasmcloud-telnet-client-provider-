@@ -1,0 +1,9 @@
+package wasmcloud:telnet;
+
+// The provider world for the Telnet capability provider.
+// Uses the standard wasmcloud:messaging interface to forward
+// Telnet messages to components as broker-messages.
+world provider {
+    // Import the standard messaging handler to forward messages to components
+    import wasmcloud:messaging/handler@0.2.0;
+}

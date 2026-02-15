@@ -1,0 +1,38 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: telnet-provider-app
+  annotations:
+    version: v0.0.1
+    description: 'Telnet provider with a test component for receiving Telnet messages'
+spec:
+  components:
+    - name: test-component
+      type: component
+      properties:
+        image: file://./component/target/wasm32-wasip2/release/custom_template_test_component_s.wasm
+      traits:
+        - type: spreadscaler
+          properties:
+            instances: 1
+        # Link from this component (source) to the provider (target)
+        - type: link
+          properties:
+            target:
+              name: telnet-provider
+              config:
+                - name: telnet-config
+                  properties:
+                    telnet_host: "127.0.0.1"
+                    telnet_port: "2323"
+                    max_reconnect_attempts: "10"
+                    initial_reconnect_delay_ms: "1000"
+            namespace: wasmcloud
+            package: messaging
+            interfaces: [handler]
+
+    - name: telnet-provider
+      type: capability
+      properties:
+        image: file://./build/wasmcloud-provider-telnet.par.gz
+        id: telnet-provider
